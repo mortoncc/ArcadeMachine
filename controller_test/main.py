@@ -22,7 +22,7 @@ for i in range(pygame.joystick.get_count()):
     joysticks[-1].init()
 
 while not gameExit:
-    clock.tick(1)
+    clock.tick(60)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
