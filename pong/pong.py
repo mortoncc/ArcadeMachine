@@ -18,9 +18,10 @@ white = (255, 255, 255)
 black = (0, 0, 0)
 motion_player_1 = [0, 0]
 motion_player_2 = [0, 0]
-motion_ball = [0, 0]
-
-start_direction = random.randint(0, 2)
+start_direction = random.randint(-1, 1)
+while start_direction == 0:
+    start_direction = random.randint(-1, 1)
+motion_ball = [9 * start_direction, 0]
 
 while True:
 
@@ -29,6 +30,11 @@ while True:
     pygame.draw.rect(screen, white, player_1)
     pygame.draw.rect(screen, white, player_2)
     pygame.draw.rect(screen, white, ball)
+
+    if player_1.colliderect(ball) or player_2.colliderect(ball):
+        motion_ball[0] *= -1
+    ball.x += motion_ball[0]
+    ball.y +=motion_ball[1]
 
     if abs(motion_player_1[1]) < 0.1:
         motion_player_1[1] = 0
