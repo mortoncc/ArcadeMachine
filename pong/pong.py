@@ -4,8 +4,10 @@ import random
 from pygame.locals import *
 pygame.init()
 
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 800
 pygame.display.set_caption("Pong")
-screen = pygame.display.set_mode((800, 800))
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 clock = pygame.time.Clock()
 
 pygame.joystick.init()
@@ -32,11 +34,22 @@ while True:
 
     if abs(motion_player_1[1]) < 0.1:
         motion_player_1[1] = 0
-    player_1.y += motion_player_1[1] * 10
+    if (player_1.y + motion_player_1[1] * 10 + player_1.height) > SCREEN_HEIGHT:
+        player_1.y = SCREEN_HEIGHT - player_1.height
+    elif (player_1.y + motion_player_1[1] * 10) < 0:
+        player_1.y = 0
+    else:
+        player_1.y += motion_player_1[1] * 10
+
 
     if abs(motion_player_2[1]) < 0.1:
         motion_player_2[1] = 0
-    player_2.y += motion_player_2[1] * 10
+    if (player_2.y + motion_player_2[1] * 10 + player_2.height) > SCREEN_HEIGHT:
+        player_2.y = SCREEN_HEIGHT - player_2.height
+    elif (player_2.y + motion_player_2[1] * 10) < 0:
+        player_2.y = 0
+    else:
+        player_2.y += motion_player_2[1] * 10
 
     for event in pygame.event.get():
         if (event.type == JOYAXISMOTION) and (event.axis == 0 or event.axis == 1):
