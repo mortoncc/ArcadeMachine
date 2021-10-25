@@ -3,8 +3,9 @@ import pygame
 import random
 from pygame.locals import *
 pygame.init()
+pygame.font.init()
 
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 1000
 SCREEN_HEIGHT = 800
 pygame.display.set_caption("Pong")
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -13,17 +14,24 @@ clock = pygame.time.Clock()
 pygame.joystick.init()
 joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
-player_1 = pygame.Rect(25, 300, 35, 200)
-player_2 = pygame.Rect(740, 300, 35, 200)
-ball = pygame.Rect(400 - (35/2), 400 - (35/2), 35, 35)
+main_font = pygame.font.SysFont("comicsans", 50)
+player_1_width = 35
+player_1_height = 200
+player_1 = pygame.Rect(25, SCREEN_HEIGHT / 2 - player_1_height / 2, player_1_width, player_1_height)
+player_2_width = 35
+player_2_height = 200
+player_2 = pygame.Rect(SCREEN_WIDTH - (player_2_width + 25), SCREEN_HEIGHT / 2 - player_2_height / 2, player_2_width, player_2_height)
+ball = pygame.Rect((SCREEN_WIDTH / 2) - (player_1.width/2), (SCREEN_HEIGHT / 2) - (player_1.width/2), 35, 35)
 white = (255, 255, 255)
 black = (0, 0, 0)
 motion_player_1 = [0, 0]
 motion_player_2 = [0, 0]
+player_1_score = 0
+player_2_score = 0
 start_direction = random.randint(-1, 1)
 while start_direction == 0:
     start_direction = random.randint(-1, 1)
-motion_ball = [9 * start_direction, 0]
+motion_ball = [10 * start_direction, 0]
 
 while True:
 
@@ -32,9 +40,40 @@ while True:
     pygame.draw.rect(screen, white, player_1)
     pygame.draw.rect(screen, white, player_2)
     pygame.draw.rect(screen, white, ball)
+    score_player_1_text = main_font.render(f"Score: {player_1_score}", 1, white)
+    score_player_2_text = main_font.render(f"Score: {player_2_score}", 1, white)
+    screen.blit(score_player_1_text, (25, 25))
+    screen.blit(score_player_2_text, (SCREEN_WIDTH - (score_player_2_text.get_width() + 25), 25))
 
     if player_1.colliderect(ball) or player_2.colliderect(ball):
         motion_ball[0] *= -1
+        motion_ball[1] = random.randint(-5, 5)
+    if ball.y <= 0 or (ball.y + ball.height >= SCREEN_HEIGHT):
+        motion_ball[1] *= -1
+
+    if ball.x <= 0:
+        player_2_score += 1
+    if ball.x + ball.width >= SCREEN_WIDTH:
+        player_1_score += 1
+    if ball.x <= 0 or (ball.x + ball.width >= SCREEN_WIDTH):
+        ball.x = (SCREEN_WIDTH / 2) - (player_1.width/2)
+        ball.y = (SCREEN_HEIGHT / 2) - (player_1.width/2)
+        start_direction = random.randint(-1, 1)
+        while start_direction == 0:
+            start_direction = random.randint(-1, 1)
+        motion_ball[0] = 10 * start_direction
+        motion_ball[1] = random.randint(-5, 5)
+        screen.fill(black)
+        pygame.draw.rect(screen, white, player_1)
+        pygame.draw.rect(screen, white, player_2)
+        pygame.draw.rect(screen, white, ball)
+        score_player_1_text = main_font.render(f"Score: {player_1_score}", 1, white)
+        score_player_2_text = main_font.render(f"Score: {player_2_score}", 1, white)
+        screen.blit(score_player_1_text, (25, 25))
+        screen.blit(score_player_2_text, (SCREEN_WIDTH - (score_player_2_text.get_width() + 25), 25))
+        pygame.display.update()
+        pygame.time.wait(1000)
+        
     ball.x += motion_ball[0]
     ball.y +=motion_ball[1]
 
