@@ -10,3 +10,7 @@ This includes:
 # controller_test
 This folder contains the code to test taking input from an Xbox controller,
 more specifically, taking input from a joystick.
+
+# hello_world
+This folder contains a single file "hello_world.py" that is used to demonstrate how to make changes
+to the repository and push them onto github.
