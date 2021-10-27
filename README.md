@@ -10,3 +10,6 @@ This includes:
 # controller_test
 This folder contains the code to test taking input from an Xbox controller,
 more specifically, taking input from a joystick.
+
+# helloWorld
+This folder has a python script called helloWorld.py.
