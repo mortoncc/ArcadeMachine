@@ -1,4 +1,5 @@
 import pygame
+from pygame.locals import *
 import os
 pygame.init()
 
@@ -12,4 +13,11 @@ MOUNTAINS = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_pl
 
 while True:
     SCREEN.blit(MAIN_BG, (0, 0))
+    SCREEN.blit(BOTTOM_CLOUDS, (0, 0))
+    SCREEN.blit(MOUNTAINS, (0, 0))
+    pygame.display.update()
+
+    for event in pygame.event.get():
+        if event.type == QUIT:
+            pygame.quit()
 
