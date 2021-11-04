@@ -12,8 +12,44 @@ MOUNTAINS = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_pl
 MIDDLE_GRASS_TILE_IMG = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "middle_grass_tile.png")), (64, 64))
 MIDDLE_GRASS_TILE = pygame.mask.from_surface(MIDDLE_GRASS_TILE_IMG)
 PLAYER_IMG =  pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "LumberjackMale.png")), (64, 64))
+PINECONE = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "Pinecone.png")), (30, 30))
+TREE = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "Tree.png")), (350, 350))
+BEARKAT = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "Bearkat.png")), (64, 64))
 PLAYER_MOTION = [0, 0]
 class tile:
+    # Constructor
+    def __init__(self, x, y, img):
+        self.x = x
+        self.y = y
+        self.img = img
+        self.mask = pygame.mask.from_surface(self.img)
+    
+    def draw(self, window):
+        window.blit(self.img, (self.x, self.y))
+
+class cone:
+    # Constructor
+    def __init__(self, x, y, img):
+        self.x = x
+        self.y = y
+        self.img = img
+        self.mask = pygame.mask.from_surface(self.img)
+    
+    def draw(self, window):
+        window.blit(self.img, (self.x, self.y))
+
+class tree:
+    # Constructor
+    def __init__(self, x, y, img):
+        self.x = x
+        self.y = y
+        self.img = img
+        self.mask = pygame.mask.from_surface(self.img)
+    
+    def draw(self, window):
+        window.blit(self.img, (self.x, self.y))
+
+class villan:
     # Constructor
     def __init__(self, x, y, img):
         self.x = x
@@ -43,6 +79,9 @@ def collide(obj1, obj2):
 
 player = player(WIDTH/2,HEIGHT/2,PLAYER_IMG)
 tile = tile(WIDTH/2-32, HEIGHT-64, MIDDLE_GRASS_TILE_IMG)
+cone = cone(WIDTH/2+100, HEIGHT-30, PINECONE)
+tree = tree(WIDTH/2+100, HEIGHT-241, TREE)
+villan = villan(WIDTH/2+125, HEIGHT-56, BEARKAT)
 
 while True:
     SCREEN.blit(MAIN_BG, (0, 0))
@@ -50,6 +89,9 @@ while True:
     SCREEN.blit(MOUNTAINS, (0, 0))
     tile.draw(SCREEN)
     player.draw(SCREEN)
+    cone.draw(SCREEN)
+    tree.draw(SCREEN)
+    villan.draw(SCREEN)
 
     # Gravity :)
     if collide(player, tile):
