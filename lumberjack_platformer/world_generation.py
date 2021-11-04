@@ -20,6 +20,27 @@ MAIN_BG = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_plat
 BOTTOM_CLOUDS = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "CloudsFront.png")), (WIDTH, HEIGHT))
 MOUNTAINS = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "BGBack.png")), (WIDTH, HEIGHT))
 
+class Player():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.motion = [0, 0]
+        self.image = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "LumberjackMale.png")), (60, 95))
+        self.mask = pygame.mask.from_surface(self.image)
+    
+    def move(self):
+        key = pygame.key.get_pressed()
+        if key[pygame.K_LEFT]:
+            self.x -= 10
+        if key[pygame.K_RIGHT]:
+            self.x += 10
+        if key[pygame.K_UP]:
+            self.y -= 10
+        if key[pygame.K_DOWN]:
+            self.y += 10
+
+        SCREEN.blit(self.image, (self.x, self.y))
+
 class World():
     def __init__(self, level):
         # tile_list will hold a list of tuples which each contain (tile image, tile position)
@@ -85,6 +106,9 @@ level_1 = [
 # generates the terrain data using level_1
 level = World(level_1)
 
+# creates a player
+player = Player(0, HEIGHT - (TILE_SIZE + 80))
+
 # main game loop
 while True:
     # draw the background images
@@ -98,12 +122,15 @@ while True:
     # draws the tiles where they belong
     level.draw()
 
+    player.move()
+
     # checks all events in the game
     for event in pygame.event.get():
         # if a "quit" event is detected, close the window
         if event.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+            
 
     # push all changes made to the window
     pygame.display.update()
