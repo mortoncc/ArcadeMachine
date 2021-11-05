@@ -1,5 +1,5 @@
 import pygame
-import os
+import os, sys
 
 from pygame.constants import K_UP, KEYDOWN
 
@@ -77,17 +77,6 @@ class Player:
     
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
-    
-    def jump(self):
-        self.isJump = True
-        while(self.isJump):
-            if self.jumpCount >= -10:
-                self.y -= (self.jumpCount * abs(self.jumpCount)) * 0.5
-                self.jumpCount -= 1
-                self.draw(SCREEN)
-            else: 
-                self.jumpCount = 10
-                self.isJump = False
         
 
 def collide(obj1, obj2):
@@ -102,6 +91,9 @@ cone = cone(WIDTH/2+100, HEIGHT-30, PINECONE)
 tree = tree(WIDTH/2+100, HEIGHT-350, TREE)
 villan = villan(WIDTH/2+125, HEIGHT-56, BEARKAT)
 
+isJump = False
+jumpCount = 10
+
 while True:
     SCREEN.blit(MAIN_BG, (0, 0))
     SCREEN.blit(BOTTOM_CLOUDS, (0, 0))
@@ -115,15 +107,12 @@ while True:
     #Gravity :)
     if collide(player, tile):
         PLAYER_MOTION[1] = 0
-    elif (player.y + player.img.get_height() > HEIGHT):
+    if (player.y + player.img.get_height()) >= HEIGHT:
         PLAYER_MOTION[1] = 0
-    else:
-        PLAYER_MOTION[1] = +10
-
-
+        player.y = HEIGHT - 64
+    
     keys = pygame.key.get_pressed()
-    if keys[pygame.K_UP]:
-        player.jump()
+    
     if keys[pygame.K_LEFT] and player.x - 10 < 0:
         player.x = 0
     elif keys[pygame.K_LEFT] and collide(player, tile):
@@ -134,12 +123,30 @@ while True:
         player.x = WIDTH - 54
     elif keys[pygame.K_RIGHT]:
         player.x += 10
+    #elif keys[pygame.K_RIGHT] and collide(player, tile):
+    #    player.x = 
+    if not(isJump):
+        PLAYER_MOTION[1] = 10
+        player.x += PLAYER_MOTION[0]
+        if player.y + 64 < HEIGHT:
+            player.y += PLAYER_MOTION[1]
+        if keys[pygame.K_UP]:
+            isJump = True
+    else:
+        if jumpCount >= -10:
+            print(player.y)
+            player.y -= (jumpCount * abs(jumpCount)) * 0.5
+            jumpCount -= 1
+        else: 
+            jumpCount = 10
+            isJump = False
 
-    player.x += PLAYER_MOTION[0]
-    player.y += PLAYER_MOTION[1]
+    
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
+            sys.exit()
     pygame.display.update()
     clock.tick(60)
+    
