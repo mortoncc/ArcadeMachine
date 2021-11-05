@@ -8,6 +8,7 @@ pygame.init()
 WIDTH, HEIGHT = 750, 750
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Lumberjack Platformer!")
+clock = pygame.time.Clock()
 
 MAIN_BG = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "CloudsBack.png")), (WIDTH, HEIGHT))
 BOTTOM_CLOUDS = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "CloudsFront.png")), (WIDTH, HEIGHT))
@@ -19,6 +20,7 @@ PINECONE = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_pla
 TREE = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "Tree.png")), (350, 350))
 BEARKAT = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "Bearkat.png")), (64, 64))
 PLAYER_MOTION = [0, 0]
+
 class tile:
     # Constructor
     def __init__(self, x, y, img):
@@ -133,5 +135,6 @@ while True:
         if event.type == pygame.QUIT:
             pygame.quit()
     pygame.display.update()
+    clock.tick(60)
     
 pygame.quit()
