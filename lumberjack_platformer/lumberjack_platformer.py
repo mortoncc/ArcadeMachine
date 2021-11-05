@@ -136,5 +136,3 @@ while True:
             pygame.quit()
     pygame.display.update()
     clock.tick(60)
-    
-pygame.quit()
