@@ -1,5 +1,8 @@
 import pygame
 import os
+
+from pygame.constants import K_UP, KEYDOWN
+
 pygame.init()
 
 WIDTH, HEIGHT = 750, 750
@@ -27,6 +30,16 @@ class tile:
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+class Player:
+    # variables
+    isJump = False
+    jumpCount = 10
+
+=======
+>>>>>>> Stashed changes
 class cone:
     # Constructor
     def __init__(self, x, y, img):
@@ -61,15 +74,29 @@ class villan:
         window.blit(self.img, (self.x, self.y))
 
 class player:
+>>>>>>> 487cf540a041f9015a7ffb584ce354f84b2fdf2c
     # Constructor
     def __init__(self, x, y, img):
         self.x = x
         self.y = y
         self.img = img
         self.mask = pygame.mask.from_surface(self.img)
+        self.isJump = False
+        self.jumpCount = 10
     
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
+    
+    def jump(self):
+        self.isJump = True
+        while(self.isJump):
+            if self.jumpCount >= -10:
+                self.y -= (self.jumpCount * abs(self.jumpCount)) * 0.5
+                self.jumpCount -= 1
+            else: 
+                self.jumpCount = 10
+                self.isJump = False
+        
 
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
@@ -77,7 +104,7 @@ def collide(obj1, obj2):
     # If there is any overlap between the object's masks, return true, else, return false
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
-player = player(WIDTH/2,HEIGHT/2,PLAYER_IMG)
+player = Player(WIDTH/2,HEIGHT/2,PLAYER_IMG)
 tile = tile(WIDTH/2-32, HEIGHT-64, MIDDLE_GRASS_TILE_IMG)
 cone = cone(WIDTH/2+100, HEIGHT-30, PINECONE)
 tree = tree(WIDTH/2+100, HEIGHT-241, TREE)
@@ -93,11 +120,22 @@ while True:
     tree.draw(SCREEN)
     villan.draw(SCREEN)
 
-    # Gravity :)
+    #Gravity :)
     if collide(player, tile):
+        PLAYER_MOTION[1] = 0
+    elif (player.y + player.img.get_height() > HEIGHT):
         PLAYER_MOTION[1] = 0
     else:
         PLAYER_MOTION[1] = +10
+
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_UP]:
+        player.jump()
+    if keys[pygame.K_LEFT] and player.x - 10 > 0:
+        player.x -= 10
+    if keys[pygame.K_RIGHT] and (player.x + player.img.get_width()) + 10 < WIDTH:
+        player.x += 10
 
     player.x += PLAYER_MOTION[0]
     player.y += PLAYER_MOTION[1]
