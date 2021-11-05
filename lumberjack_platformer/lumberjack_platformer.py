@@ -30,16 +30,6 @@ class tile:
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-class Player:
-    # variables
-    isJump = False
-    jumpCount = 10
-
-=======
->>>>>>> Stashed changes
 class cone:
     # Constructor
     def __init__(self, x, y, img):
@@ -73,8 +63,7 @@ class villan:
     def draw(self, window):
         window.blit(self.img, (self.x, self.y))
 
-class player:
->>>>>>> 487cf540a041f9015a7ffb584ce354f84b2fdf2c
+class Player:
     # Constructor
     def __init__(self, x, y, img):
         self.x = x
