@@ -84,6 +84,7 @@ class Player:
             if self.jumpCount >= -10:
                 self.y -= (self.jumpCount * abs(self.jumpCount)) * 0.5
                 self.jumpCount -= 1
+                self.draw(SCREEN)
             else: 
                 self.jumpCount = 10
                 self.isJump = False
@@ -98,7 +99,7 @@ def collide(obj1, obj2):
 player = Player(WIDTH/2,HEIGHT/2,PLAYER_IMG)
 tile = tile(WIDTH/2-32, HEIGHT-64, MIDDLE_GRASS_TILE_IMG)
 cone = cone(WIDTH/2+100, HEIGHT-30, PINECONE)
-tree = tree(WIDTH/2+100, HEIGHT-241, TREE)
+tree = tree(WIDTH/2+100, HEIGHT-350, TREE)
 villan = villan(WIDTH/2+125, HEIGHT-56, BEARKAT)
 
 while True:
@@ -123,9 +124,15 @@ while True:
     keys = pygame.key.get_pressed()
     if keys[pygame.K_UP]:
         player.jump()
-    if keys[pygame.K_LEFT] and player.x - 10 > 0:
+    if keys[pygame.K_LEFT] and player.x - 10 < 0:
+        player.x = 0
+    elif keys[pygame.K_LEFT] and collide(player, tile):
+        player.x = (tile.x + tile.img.get_width())
+    elif keys[pygame.K_LEFT]:
         player.x -= 10
-    if keys[pygame.K_RIGHT] and (player.x + player.img.get_width()) + 10 < WIDTH:
+    if keys[pygame.K_RIGHT] and (player.x + player.img.get_width()) + 10 > WIDTH:
+        player.x = WIDTH - 54
+    elif keys[pygame.K_RIGHT]:
         player.x += 10
 
     player.x += PLAYER_MOTION[0]
