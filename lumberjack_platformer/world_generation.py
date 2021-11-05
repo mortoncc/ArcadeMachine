@@ -3,7 +3,7 @@ from pygame.locals import *
 pygame.init()
 
 # Declares the width and height for the game window
-WIDTH, HEIGHT = 900, 900
+WIDTH, HEIGHT = 750, 750
 # Creates the game window of width and height specified above
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 # Sets the caption of the window to "Lumberjack Platformer!"
