@@ -68,7 +68,7 @@ class Player(pygame.sprite.Sprite):
             self.rect = self.image.get_rect(topright = self.rect.topright)
         elif self.on_ceiling and self.on_left:
             self.rect = self.image.get_rect(topleft = self.rect.topleft)
-        elif self.on_ground:
+        elif self.on_ceiling:
             self.rect = self.image.get_rect(midtop = self.rect.midtop)
 
     def run_dust_animation(self):

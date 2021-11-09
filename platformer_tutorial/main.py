@@ -1,5 +1,5 @@
 import pygame, sys
-from settings import *
+from settings import screen_width, screen_height, level_map
 from level import Level
 
 pygame.init()
