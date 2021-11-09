@@ -1,7 +1,9 @@
 import pygame
 import os, sys
 
+
 from pygame.constants import K_UP, KEYDOWN
+from tiles import Tile
 
 pygame.init()
 
@@ -21,16 +23,7 @@ TREE = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platfor
 BEARKAT = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "Bearkat.png")), (64, 64))
 PLAYER_MOTION = [0, 0]
 
-class tile:
-    # Constructor
-    def __init__(self, x, y, img):
-        self.x = x
-        self.y = y
-        self.img = img
-        self.mask = pygame.mask.from_surface(self.img)
-    
-    def draw(self, window):
-        window.blit(self.img, (self.x, self.y))
+
 
 class cone:
     # Constructor
@@ -86,7 +79,7 @@ def collide(obj1, obj2):
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
 player = Player(WIDTH/2,HEIGHT/2,PLAYER_IMG)
-tile = tile(WIDTH/2-32, HEIGHT-64, MIDDLE_GRASS_TILE_IMG)
+Tile = Tile(WIDTH/2-32, HEIGHT-64, MIDDLE_GRASS_TILE_IMG)
 cone = cone(WIDTH/2+100, HEIGHT-30, PINECONE)
 tree = tree(WIDTH/2+100, HEIGHT-350, TREE)
 villan = villan(WIDTH/2+125, HEIGHT-56, BEARKAT)
@@ -98,14 +91,14 @@ while True:
     SCREEN.blit(MAIN_BG, (0, 0))
     SCREEN.blit(BOTTOM_CLOUDS, (0, 0))
     SCREEN.blit(MOUNTAINS, (0, 0))
-    tile.draw(SCREEN)
+    Tile.draw(SCREEN)
     player.draw(SCREEN)
     cone.draw(SCREEN)
     tree.draw(SCREEN)
     villan.draw(SCREEN)
 
     #Gravity :)
-    if collide(player, tile):
+    if collide(player, Tile):
         PLAYER_MOTION[1] = 0
     if (player.y + player.img.get_height()) >= HEIGHT:
         PLAYER_MOTION[1] = 0
@@ -115,8 +108,8 @@ while True:
     
     if keys[pygame.K_LEFT] and player.x - 10 < 0:
         player.x = 0
-    elif keys[pygame.K_LEFT] and collide(player, tile):
-        player.x = (tile.x + tile.img.get_width())
+    elif keys[pygame.K_LEFT] and collide(player, Tile):
+        player.x = (Tile.x + Tile.img.get_width())
     elif keys[pygame.K_LEFT]:
         player.x -= 10
     if keys[pygame.K_RIGHT] and (player.x + player.img.get_width()) + 10 > WIDTH:
