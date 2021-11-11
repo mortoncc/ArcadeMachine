@@ -7,12 +7,13 @@ from player import Player
 from settings import screen_width, screen_height
 
 class Level:
-    def __init__(self, current_level, surface):
+    def __init__(self, current_level, surface, create_overworld):
         self.display_surface = surface
         self.current_level = current_level
         level_data = levels[current_level]
         level_content = level_data['content']
         self.new_max_level = level_data['unlock']
+        self.create_overworld = create_overworld
 
         # level display
         self.font = pygame.font.Font(None, 40)
@@ -76,14 +77,24 @@ class Level:
                     player.rect.top = sprite.rect.bottom
                     player.direction.y = 0
 
+    def input(self):
+        keys = pygame.key.get_pressed()
+        if keys[pygame.K_RETURN]:
+            self.create_overworld(self.current_level, self.new_max_level)
+        if keys[pygame.K_ESCAPE]:
+            self.create_overworld(self.current_level, 0)
+
     def run(self):
+        self.display_surface.blit(self.text_surf, self.text_rect)
+        self.input()
+
         # level tiles
-        self.tiles.update(self.world_shift)
-        self.tiles.draw(self.display_surface)
-        self.scroll_x()
+        #self.tiles.update(self.world_shift)
+        #self.tiles.draw(self.display_surface)
+        #self.scroll_x()
 
         # player
-        self.player.update()
-        self.horizontal_movement_collision()
-        self.vertical_movement_collision()
-        self.player.draw(self.display_surface)
+        #self.player.update()
+        #self.horizontal_movement_collision()
+        #self.vertical_movement_collision()
+        #self.player.draw(self.display_surface)
