@@ -116,4 +116,5 @@ class Level:
         self.player.draw(self.display_surface)
 
         # win flag
+        self.win.update(self.world_shift)
         self.win.draw(self.display_surface)

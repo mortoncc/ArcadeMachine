@@ -6,3 +6,6 @@ class Win(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "flag.png")), (64, 64))
         self.rect = self.image.get_rect(topleft = pos)
+
+    def update(self, x_shift):
+        self.rect.x += x_shift
