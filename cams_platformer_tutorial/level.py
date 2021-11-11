@@ -1,16 +1,27 @@
 import pygame 
 import os
 from tiles import Tile
+from game_data import levels
 from settings import tile_size
 from player import Player
 from settings import screen_width, screen_height
 
 class Level:
-    def __init__(self, level_data, surface):
+    def __init__(self, current_level, surface):
         self.display_surface = surface
-        self.setup_level(level_data)
-        self.world_shift = 0
-        self.background = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "CloudsBack.png")), (screen_width, screen_height))
+        self.current_level = current_level
+        level_data = levels[current_level]
+        level_content = level_data['content']
+        self.new_max_level = level_data['unlock']
+
+        # level display
+        self.font = pygame.font.Font(None, 40)
+        self.text_surf = self.font.render(level_content, True, 'White')
+        self.text_rect = self.text_surf.get_rect(center = (screen_width / 2, screen_height / 2))
+
+        #self.setup_level(level_data)
+        #self.world_shift = 0
+        #self.background = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "CloudsBack.png")), (screen_width, screen_height))
     
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
