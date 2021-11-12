@@ -1,10 +1,12 @@
 import pygame 
 import os
+import time
 from tiles import Tile
 from game_data import levels
 from settings import tile_size
 from player import Player
 from settings import screen_width, screen_height
+from win import Win
 
 class Level:
     def __init__(self, current_level, surface, create_overworld):
@@ -17,16 +19,17 @@ class Level:
 
         # level display
         self.font = pygame.font.Font(None, 40)
-        self.text_surf = self.font.render(level_content, True, 'White')
-        self.text_rect = self.text_surf.get_rect(center = (screen_width / 2, screen_height / 2))
+        #self.text_surf = self.font.render(level_content, True, 'White')
+        #self.text_rect = self.text_surf.get_rect(center = (screen_width / 2, screen_height / 2))
 
-        #self.setup_level(level_data)
-        #self.world_shift = 0
-        #self.background = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "CloudsBack.png")), (screen_width, screen_height))
+        self.setup_level(level_content)
+        self.world_shift = 0
+        self.background = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "CloudsBack.png")), (screen_width, screen_height))
     
     def setup_level(self, layout):
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
+        self.win = pygame.sprite.GroupSingle()
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
                 x = col_index * tile_size
@@ -34,9 +37,13 @@ class Level:
                 if cell == 'X':
                     tile = Tile((x, y), tile_size)
                     self.tiles.add(tile)
+                if cell == 'W':
+                    win_sprite = Win((x,y))
+                    self.win.add(win_sprite)
                 if cell == 'P':
                     player_sprite = Player((x, y))
                     self.player.add(player_sprite)
+                
     
     def scroll_x(self):
         player = self.player.sprite
@@ -84,17 +91,30 @@ class Level:
         if keys[pygame.K_ESCAPE]:
             self.create_overworld(self.current_level, 0)
 
+    def beat_or_lose_level(self):
+        if self.player.sprite.rect.colliderect(self.win.sprite.rect):
+            self.create_overworld(self.current_level, self.new_max_level)
+        if self.player.sprite.rect.top > screen_height + 200:
+            self.create_overworld(self.current_level, 0)
+
     def run(self):
-        self.display_surface.blit(self.text_surf, self.text_rect)
+        self.display_surface.blit(self.background, (0,0))
+        #self.display_surface.blit(self.text_surf, self.text_rect)
         self.input()
 
         # level tiles
-        #self.tiles.update(self.world_shift)
-        #self.tiles.draw(self.display_surface)
-        #self.scroll_x()
+        self.tiles.update(self.world_shift)
+        self.tiles.draw(self.display_surface)
+        self.scroll_x()
+
+        self.beat_or_lose_level()
 
         # player
-        #self.player.update()
-        #self.horizontal_movement_collision()
-        #self.vertical_movement_collision()
-        #self.player.draw(self.display_surface)
+        self.player.update()
+        self.horizontal_movement_collision()
+        self.vertical_movement_collision()
+        self.player.draw(self.display_surface)
+
+        # win flag
+        self.win.update(self.world_shift)
+        self.win.draw(self.display_surface)

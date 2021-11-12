@@ -41,7 +41,6 @@ while True:
     screen.fill('black')
     #screen.blit(level.background, (0, 0))
     game.run()
-    #level.run()
 
     pygame.display.update()
     clock.tick(60)
