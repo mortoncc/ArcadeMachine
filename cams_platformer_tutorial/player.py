@@ -36,5 +36,10 @@ class Player(pygame.sprite.Sprite):
     def jump(self):
         self.direction.y = self.jump_speed
 
-    def update(self):
+    def update(self, tiles):
         self.get_input()
+
+        # had to fix bug where player can jump midair if they run off the edge
+        for sprite in tiles.sprites():
+            if not sprite.rect.colliderect(self.rect):
+                self.canJump = False
