@@ -1,3 +1,6 @@
+from settings import num_of_lives
+from lives import Life
+
 level_0 = {'node_pos': (110, 400), 'content':   [
     '                                                    ',
     '                                         XXXXXX     ',
@@ -85,3 +88,10 @@ levels = {
     4: level_4,
     5: level_5
 }
+
+# add lives
+lives = []
+count = 0
+while count < num_of_lives:
+    lives.append(Life())
+    count = count + 1
