@@ -1,9 +1,11 @@
 import pygame 
 import os
 import time
+
+from pygame import surface
 from tiles import Tile
-from game_data import levels
-from settings import tile_size
+from game_data import levels, lives
+from settings import tile_size, num_of_lives
 from player import Player
 from settings import screen_width, screen_height
 from win import Win
@@ -30,6 +32,8 @@ class Level:
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.win = pygame.sprite.GroupSingle()
+
+        # level placement
         for row_index, row in enumerate(layout):
             for col_index, cell in enumerate(row):
                 x = col_index * tile_size
@@ -70,6 +74,7 @@ class Level:
                     player.rect.left = sprite.rect.right
                 elif player.direction.x > 0:
                     player.rect.right = sprite.rect.left
+    
     def vertical_movement_collision(self):
         player = self.player.sprite
         player.apply_gravity()
@@ -96,10 +101,22 @@ class Level:
             self.create_overworld(self.current_level, self.new_max_level)
         if self.player.sprite.rect.top > screen_height + 200:
             self.create_overworld(self.current_level, 0)
+            if len(lives) > 0:
+                lives.pop()
+        if len(lives) == 0:
+            self.game_over()
+    
+    def draw_lives(self):
+        life_x = 64
+        life_y = 64
+        for life in lives:
+            self.display_surface.blit(life.image, (life_x, life_y))
+            life_x = life_x + 32
 
     def run(self):
+        # draw images
         self.display_surface.blit(self.background, (0,0))
-        #self.display_surface.blit(self.text_surf, self.text_rect)
+        self.draw_lives()
         self.input()
 
         # level tiles
@@ -110,7 +127,7 @@ class Level:
         self.beat_or_lose_level()
 
         # player
-        self.player.update()
+        self.player.update(self.tiles)
         self.horizontal_movement_collision()
         self.vertical_movement_collision()
         self.player.draw(self.display_surface)

@@ -1,6 +1,7 @@
 import pygame
 import os
 
+# this is the flag that if the player touches they win the level
 class Win(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
