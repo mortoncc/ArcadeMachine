@@ -11,13 +11,14 @@ from settings import screen_width, screen_height
 from win import Win
 
 class Level:
-    def __init__(self, current_level, surface, create_overworld):
+    def __init__(self, current_level, surface, create_overworld, max_level):
         self.display_surface = surface
         self.current_level = current_level
         level_data = levels[current_level]
         level_content = level_data['content']
         self.new_max_level = level_data['unlock']
         self.create_overworld = create_overworld
+        self.max_level = max_level
 
         # level display
         self.font = pygame.font.Font(None, 40)
@@ -100,11 +101,14 @@ class Level:
         if self.player.sprite.rect.colliderect(self.win.sprite.rect):
             self.create_overworld(self.current_level, self.new_max_level)
         if self.player.sprite.rect.top > screen_height + 200:
-            self.create_overworld(self.current_level, 0)
+            self.create_overworld(self.current_level, self.max_level)
             if len(lives) > 0:
                 lives.pop()
         if len(lives) == 0:
             self.game_over()
+    
+    def game_over(self):
+        self.create_overworld(0, 0)
     
     def draw_lives(self):
         life_x = 64
