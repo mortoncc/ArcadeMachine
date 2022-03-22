@@ -115,7 +115,7 @@ class Level:
     def game_over(self):
         self.is_game_over = True
         self.display_game_over()
-        self.create_overworld(0, 0, self.is_game_over)
+        # self.create_overworld(0, 0, self.is_game_over)
 
     
     def draw_lives(self):
