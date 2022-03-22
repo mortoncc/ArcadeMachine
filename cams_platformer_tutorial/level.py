@@ -11,7 +11,7 @@ from settings import screen_width, screen_height
 from win import Win
 
 class Level:
-    def __init__(self, current_level, surface, create_overworld, max_level, is_game_over):
+    def __init__(self, current_level, surface, create_overworld, max_level, is_game_over, display_game_over):
         self.display_surface = surface
         self.current_level = current_level
         level_data = levels[current_level]
@@ -20,6 +20,7 @@ class Level:
         self.create_overworld = create_overworld
         self.max_level = max_level
         self.is_game_over = is_game_over
+        self.display_game_over = display_game_over
 
         # level display
         self.font = pygame.font.Font(None, 40)
@@ -113,6 +114,7 @@ class Level:
     
     def game_over(self):
         self.is_game_over = True
+        self.display_game_over()
         self.create_overworld(0, 0, self.is_game_over)
 
     
