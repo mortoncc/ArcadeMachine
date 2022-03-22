@@ -91,7 +91,9 @@ levels = {
 
 # add lives
 lives = []
-count = 0
-while count < num_of_lives:
-    lives.append(Life())
-    count = count + 1
+
+def add_lives():
+    count = 0
+    while count < num_of_lives:
+        lives.append(Life())
+        count = count + 1

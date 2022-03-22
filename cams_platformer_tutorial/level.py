@@ -4,14 +4,14 @@ import time
 
 from pygame import surface
 from tiles import Tile
-from game_data import levels, lives
+from game_data import levels, lives, add_lives
 from settings import tile_size, num_of_lives
 from player import Player
 from settings import screen_width, screen_height
 from win import Win
 
 class Level:
-    def __init__(self, current_level, surface, create_overworld, max_level):
+    def __init__(self, current_level, surface, create_overworld, max_level, is_game_over):
         self.display_surface = surface
         self.current_level = current_level
         level_data = levels[current_level]
@@ -19,6 +19,7 @@ class Level:
         self.new_max_level = level_data['unlock']
         self.create_overworld = create_overworld
         self.max_level = max_level
+        self.is_game_over = is_game_over
 
         # level display
         self.font = pygame.font.Font(None, 40)
@@ -33,6 +34,9 @@ class Level:
         self.tiles = pygame.sprite.Group()
         self.player = pygame.sprite.GroupSingle()
         self.win = pygame.sprite.GroupSingle()
+        if self.is_game_over:
+            add_lives()
+            self.is_game_over = False
 
         # level placement
         for row_index, row in enumerate(layout):
@@ -99,16 +103,18 @@ class Level:
 
     def beat_or_lose_level(self):
         if self.player.sprite.rect.colliderect(self.win.sprite.rect):
-            self.create_overworld(self.current_level, self.new_max_level)
+            self.create_overworld(self.current_level, self.new_max_level, self.is_game_over)
         if self.player.sprite.rect.top > screen_height + 200:
-            self.create_overworld(self.current_level, self.max_level)
+            self.create_overworld(self.current_level, self.max_level, self.is_game_over)
             if len(lives) > 0:
                 lives.pop()
         if len(lives) == 0:
             self.game_over()
     
     def game_over(self):
-        self.create_overworld(0, 0)
+        self.is_game_over = True
+        self.create_overworld(0, 0, self.is_game_over)
+
     
     def draw_lives(self):
         life_x = 64
