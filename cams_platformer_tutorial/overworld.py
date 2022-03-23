@@ -1,5 +1,6 @@
 import pygame
 from game_data import levels
+import os
 
 class Node(pygame.sprite.Sprite):
     def __init__(self, pos, status, icon_speed):
@@ -8,7 +9,7 @@ class Node(pygame.sprite.Sprite):
         if status == 'available':
             self.image.fill('red')
         else:
-            self.image.fill('grey')
+            self.image.fill((217, 183, 48))
         self.rect = self.image.get_rect(center = pos)
         self.detection_zone = pygame.Rect(self.rect.centerx - (icon_speed / 2),self.rect.centery - (icon_speed / 2), icon_speed, icon_speed)
 
@@ -16,8 +17,8 @@ class Icon(pygame.sprite.Sprite):
     def __init__(self, pos):
         super().__init__()
         self.pos = pos
-        self.image = pygame.Surface((20, 20))
-        self.image.fill('blue')
+        self.image = pygame.transform.scale(pygame.image.load(os.path.join("lumberjack_platformer\\assets", "LumberjackMale.png")), (64, 64))
+        #self.image.fill('blue')
         self.rect = self.image.get_rect(center = pos)
     
     def update(self):
@@ -95,6 +96,7 @@ class Overworld:
                 self.move_direction = pygame.math.Vector2(0,0)
 
     def run(self):
+        self.display_surface.fill((49, 176, 42))
         self.input()
         self.update_icon_pos()
         self.icon.update()
