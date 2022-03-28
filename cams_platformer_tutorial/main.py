@@ -3,6 +3,7 @@ from settings import *
 from level import Level
 from overworld import Overworld
 from game_over import Game_Over
+from main_menu import Main_menu
 
 
 class Game:
@@ -12,6 +13,7 @@ class Game:
         self.overworld = Overworld(0, self.max_level, screen, self.create_level, self.is_game_over)
         self.status = 'overworld'
         self.game_over = Game_Over(screen)
+        self.main_menu = Main_menu(screen)
 
     def create_level(self, current_level, is_game_over):
         self.level = Level(current_level, screen, self.create_overworld, self.max_level, is_game_over, self.display_game_over)
@@ -28,11 +30,16 @@ class Game:
     def display_game_over(self):
         self.status = 'game over'
 
+    def create_main_menu(self):
+        self.status = 'main menu'
+
     def run(self):
         if self.status == 'overworld':
             self.overworld.run()
         elif self.status == 'game over':
             self.game_over.run()
+        elif self.status == 'main menu':
+            self.main_menu.run()
         else:
             self.level.run()
 
