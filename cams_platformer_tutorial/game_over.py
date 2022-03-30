@@ -1,5 +1,6 @@
 import pygame
 from settings import screen_height, screen_width
+import time
 
 class Game_Over:
     def __init__(self, surface):
@@ -37,40 +38,9 @@ class Game_Over:
         self.surface.blit(self.quit_txt_surface, self.quit_txt_Rect)
     
     def user_input(self):
-        for event in pygame.event.get():
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN and self.key_pressed == False:
-                    if event.key == pygame.K_DOWN:
-                        if self.selected == 'continue':
-                            self.continue_txt_surface = self.font.render('CONTINUE', True, 'white')
-                            self.quit_txt_surface = self.font.render('QUIT', True, 'black', 'white')
-                            self.selected = 'quit'
-                        else:
-                            self.continue_txt_surface = self.font.render('CONTINUE', True, 'black', 'white')
-                            self.quit_txt_surface = self.font.render('QUIT', True, 'white')
-                            self.selected = 'continue'
-                    if event.key == pygame.K_UP:
-                        if self.selected == 'continue':
-                            self.continue_txt_surface = self.font.render('CONTINUE', True, 'white')
-                            self.quit_txt_surface = self.font.render('QUIT', True, 'black', 'white')
-                            self.selected = 'quit'
-                        else:
-                            self.continue_txt_surface = self.font.render('CONTINUE', True, 'black', 'white')
-                            self.quit_txt_surface = self.font.render('QUIT', True, 'white')
-                            self.selected = 'continue'
-                    self.key_pressed = True
-                if event.type == pygame.KEYUP:
-                    self.key_pressed = False
-                    
-            
-                
-              
-                
-                  
-        
         keys = pygame.key.get_pressed()
 
-        if keys[pygame.K_DOWN]:
+        if keys[pygame.K_DOWN] and not self.key_pressed:
             if self.selected == 'continue':
                 self.continue_txt_surface = self.font.render('CONTINUE', True, 'white')
                 self.quit_txt_surface = self.font.render('QUIT', True, 'black', 'white')
@@ -79,7 +49,10 @@ class Game_Over:
                 self.continue_txt_surface = self.font.render('CONTINUE', True, 'black', 'white')
                 self.quit_txt_surface = self.font.render('QUIT', True, 'white')
                 self.selected = 'continue'
-        if keys[pygame.K_UP]:
+            self.key_pressed = True
+
+
+        if keys[pygame.K_UP] and not self.key_pressed:
             if self.selected == 'continue':
                 self.continue_txt_surface = self.font.render('CONTINUE', True, 'white')
                 self.quit_txt_surface = self.font.render('QUIT', True, 'black', 'white')
@@ -88,7 +61,7 @@ class Game_Over:
                 self.continue_txt_surface = self.font.render('CONTINUE', True, 'black', 'white')
                 self.quit_txt_surface = self.font.render('QUIT', True, 'white')
                 self.selected = 'continue'
-        
+            self.key_pressed = True
     
     def run(self):
         self.create_menu()

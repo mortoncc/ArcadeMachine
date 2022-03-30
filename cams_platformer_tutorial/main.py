@@ -57,7 +57,6 @@ while True:
             sys.exit()
 
     screen.fill('black')
-    #screen.blit(level.background, (0, 0))
     game.run()
 
     pygame.display.update()
