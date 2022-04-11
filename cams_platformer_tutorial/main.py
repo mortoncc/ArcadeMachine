@@ -33,11 +33,11 @@ class Game:
     def create_main_menu(self):
         self.status = 'main menu'
 
-    def run(self):
+    def run(self, events):
         if self.status == 'overworld':
             self.overworld.run()
         elif self.status == 'game over':
-            self.game_over.run()
+            self.game_over.run(events)
         elif self.status == 'main menu':
             self.main_menu.run()
         else:
@@ -57,7 +57,7 @@ while True:
             sys.exit()
 
     screen.fill('black')
-    game.run()
+    game.run(pygame.event.get())
 
     pygame.display.update()
     clock.tick(60)

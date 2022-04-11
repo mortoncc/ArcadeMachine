@@ -37,7 +37,9 @@ class Game_Over:
         self.surface.blit(self.continue_txt_surface, self.continue_txt_Rect)
         self.surface.blit(self.quit_txt_surface, self.quit_txt_Rect)
     
-    def user_input(self):
+    def user_input(self, events):
+        for event in events:
+            print("hello")
         keys = pygame.key.get_pressed()
 
         if keys[pygame.K_DOWN] and not self.key_pressed:
@@ -63,6 +65,6 @@ class Game_Over:
                 self.selected = 'continue'
             self.key_pressed = True
     
-    def run(self):
+    def run(self, events):
         self.create_menu()
-        self.user_input()
+        self.user_input(events)
